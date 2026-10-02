@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, labeled, unlabeled, ready_for_review]
+  push:
+    branches: [main]
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  policy:
+    name: policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          check-latest: false
+      - name: Test policy guards
+        run: node --test scripts/policy/*.test.mjs
+      - name: Validate repository policy
+        run: node scripts/policy/repository-policy.mjs
+      - name: Validate pull request policy
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node scripts/policy/pr-policy.mjs
+
+  verify:
+    name: verify
+    if: ${{ always() }}
+    needs: [policy]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Verify required jobs
+        shell: bash
+        env:
+          POLICY_RESULT: ${{ needs.policy.result }}
+        run: |
+          if [[ "$POLICY_RESULT" != "success" ]]; then
+            echo "Required job failed or did not complete: policy=$POLICY_RESULT" >&2
+            exit 1
+          fi
+          echo "All required jobs completed successfully."

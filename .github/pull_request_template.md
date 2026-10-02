@@ -22,6 +22,10 @@ Not applicable.
 
 <!-- For a breaking PR, replace the line above with the affected contract, what breaks, migration steps, and rollback. -->
 
+## Performance
+
+<!-- Required only for `perf`: Method, Before, and After. Otherwise remove this section or write "Not applicable." -->
+
 ## Related Work
 
 <!-- Use native links such as `Closes #123`, `Related to #456`, or `Depends on #120`. -->
