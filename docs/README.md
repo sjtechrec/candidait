@@ -9,6 +9,12 @@ Keep this index short. Durable project knowledge belongs in the smallest appropr
 - [Contributing](../CONTRIBUTING.md)
 - [Security policy](../SECURITY.md)
 
+Desired live repository settings are recorded in [`.github/settings/repository.json`](../.github/settings/repository.json) and can be compared without mutation:
+
+```powershell
+node scripts/settings/settings-check.mjs --repo sjtechrec/candidait
+```
+
 ## Product and architecture
 
 Product requirements will be added after the product purpose is selected.
