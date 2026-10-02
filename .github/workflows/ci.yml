@@ -31,7 +31,7 @@ jobs:
           node-version-file: .node-version
           check-latest: false
       - name: Test policy guards
-        run: node --test scripts/policy/*.test.mjs
+        run: node --test scripts/policy/*.test.mjs scripts/settings/*.test.mjs
       - name: Validate repository policy
         run: node scripts/policy/repository-policy.mjs
       - name: Validate pull request policy

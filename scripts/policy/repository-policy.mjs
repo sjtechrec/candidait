@@ -12,6 +12,7 @@ const REQUIRED_FILES = [
   '.github/dependabot.yml',
   '.github/pr-scopes.json',
   '.github/pull_request_template.md',
+  '.github/settings/repository.json',
   '.github/workflows/ci.yml',
   'CHANGELOG.md',
   'CODE_OF_CONDUCT.md',
@@ -20,6 +21,7 @@ const REQUIRED_FILES = [
   'README.md',
   'ROADMAP.md',
   'SECURITY.md',
+  'scripts/settings/settings-check.mjs',
 ];
 
 const TEXT_EXTENSIONS = new Set(['.json', '.md', '.mjs', '.txt', '.yaml', '.yml']);
