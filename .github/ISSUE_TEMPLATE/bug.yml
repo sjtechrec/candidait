@@ -1,0 +1,42 @@
+name: Bug report
+description: Report reproducible behavior that is incorrect.
+title: ""
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, personal data, or vulnerability details. Follow SECURITY.md for security concerns.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Provide the smallest reliable sequence that demonstrates the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include relevant version, browser, operating system, and deployment details.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: Add safe logs, screenshots, or recordings with sensitive information removed.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who is affected and how severely?
+    validations:
+      required: true

@@ -1,0 +1,41 @@
+name: Feature proposal
+description: Propose a user outcome or product capability.
+title: ""
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: Describe the user and the unmet need without prescribing a solution.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should become possible, and how will success be recognized?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Describe a possible solution and meaningful alternatives.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable conditions that would make this complete.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risks and constraints
+      description: Consider security, privacy, accessibility, data, operations, and migration.
+    validations:
+      required: true

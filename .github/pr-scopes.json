@@ -1,0 +1,12 @@
+{
+  "scopes": [
+    "ci",
+    "deps",
+    "docs",
+    "project",
+    "release",
+    "repo",
+    "security",
+    "various"
+  ]
+}
