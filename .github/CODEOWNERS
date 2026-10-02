@@ -1,0 +1,8 @@
+# Ownership is informational while Candidait has one maintainer.
+* @sjtechrec
+
+# Changes that can weaken repository controls require explicit attention.
+/.github/ @sjtechrec
+/scripts/ @sjtechrec
+/docs/architecture/ @sjtechrec
+/SECURITY.md @sjtechrec
