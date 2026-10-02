@@ -11,4 +11,6 @@ Keep this index short. Durable project knowledge belongs in the smallest appropr
 
 ## Product and architecture
 
-Product requirements and architecture decision records will be added after the product purpose and application stack are selected.
+Product requirements will be added after the product purpose is selected.
+
+- [ADR 0001: Use Node.js for initial governance checks](architecture/0001-governance-runtime.md)
