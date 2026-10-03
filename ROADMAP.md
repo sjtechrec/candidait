@@ -34,4 +34,4 @@ This roadmap communicates direction, not a fixed commitment. Priorities may chan
 - Define release, deployment, and rollback processes.
 - Prioritize integrations and expanded workflows based on validated needs.
 
-Actionable work belongs in GitHub Issues and the Project after the initial repository bootstrap. See [TODO.md](TODO.md) for the temporary bootstrap list.
+Actionable work belongs in GitHub Issues and the [Candidait Project](https://github.com/users/sjtechrec/projects/2). This roadmap communicates direction without duplicating live status.

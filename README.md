@@ -8,7 +8,7 @@ Repository governance and documentation are being established first. There is no
 
 - [Repository setup plan](docs/repository-setup-plan.md)
 - [Roadmap](ROADMAP.md)
-- [Temporary bootstrap tasks](TODO.md)
+- [GitHub Project](https://github.com/users/sjtechrec/projects/2)
 - [Documentation index](docs/README.md)
 
 ## Getting started
