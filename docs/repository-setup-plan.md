@@ -11,7 +11,7 @@ The plan is tailored to the repository state observed on 2026-10-02:
 - No application code, production environment, or supported release.
 - GitHub Actions enabled with read-only default workflow permissions.
 - All merge methods initially enabled and merged branches retained.
-- No required checks, protected branch, ruleset, environment, or Project.
+- At the baseline, no required checks, protected branch, ruleset, environment, or Project.
 - GitHub rejected private-repository rulesets with an instruction to upgrade to GitHub Pro or make the repository public.
 
 ## Operating principles
@@ -142,6 +142,8 @@ Activation test:
 - Exercise and document break-glass recovery.
 
 ## Phase 5: minimal GitHub Project
+
+Status: completed on 2026-10-02. The live configuration and working agreement are documented in [github-project.md](github-project.md).
 
 Start with one Candidait Project and avoid duplicate classification.
 
