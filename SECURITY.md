@@ -13,9 +13,9 @@ Candidait is in initial development. There are no supported releases or producti
 
 Do not disclose a suspected vulnerability in a public issue, discussion, or pull request.
 
-This private repository currently has one maintainer and no external reporting channel. Do not grant broader access or begin external testing until a dedicated security contact is configured.
+Candidait is a public repository maintained by `sjtechrec`. To report a suspected vulnerability privately, use [Report a vulnerability](https://github.com/sjtechrec/candidait/security/advisories/new) in the repository Security tab. GitHub private vulnerability reporting is enabled; reports are shared privately with the maintainer.
 
-For a vulnerability discovered by the maintainer, create a draft repository security advisory and keep exploit details out of normal issues, pull requests, and commit messages. Future authorized collaborators must use the private security contact documented here once it exists.
+For a vulnerability discovered by the maintainer, create a draft repository security advisory. Keep exploit details out of public issues, pull requests, and commit messages, and coordinate disclosure through the private advisory.
 
 A useful report includes:
 
