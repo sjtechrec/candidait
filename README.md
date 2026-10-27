@@ -6,7 +6,7 @@ Candidait is a human-centered career marketplace prototype for candidates and em
 
 The public website is hosted at [www.candidait.com](https://www.candidait.com/) using GitHub Pages. Its static HTML, CSS, JavaScript, fonts, and brand assets live at the repository root. Pages publishes from `main` and `/ (root)`. The `CNAME` file preserves the custom domain; `.nojekyll` serves the files without Jekyll processing.
 
-The site is a front-end prototype. Resume analysis, live AI search, real authentication, applications, and employer services are not connected to backend services. Job listings are illustrative and legal pages are planning drafts.
+The public site currently shows a coming-soon page with the brand header. Existing prototype routes also show this page, so unfinished features are not presented as available. The full static prototype is preserved on the `prototype/full-website` branch for continued development. Resume analysis, live AI search, real authentication, applications, and employer services are not connected to backend services.
 
 - [Repository setup plan](docs/repository-setup-plan.md)
 - [Roadmap](ROADMAP.md)
