@@ -31,7 +31,7 @@ jobs:
           node-version-file: .node-version
           check-latest: false
       - name: Test policy guards
-        run: node --test scripts/policy/*.test.mjs scripts/settings/*.test.mjs
+        run: node --test scripts/policy/*.test.mjs scripts/settings/*.test.mjs scripts/checks/*.test.mjs
       - name: Validate repository policy
         run: node scripts/policy/repository-policy.mjs
       - name: Validate pull request policy
@@ -41,10 +41,27 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: node scripts/policy/pr-policy.mjs
 
+  javascript:
+    name: javascript
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          check-latest: false
+      - name: Check JavaScript syntax
+        run: node scripts/checks/javascript.mjs
+
   verify:
     name: verify
     if: ${{ always() }}
-    needs: [policy]
+    needs: [policy, javascript]
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -52,9 +69,10 @@ jobs:
         shell: bash
         env:
           POLICY_RESULT: ${{ needs.policy.result }}
+          JAVASCRIPT_RESULT: ${{ needs.javascript.result }}
         run: |
-          if [[ "$POLICY_RESULT" != "success" ]]; then
-            echo "Required job failed or did not complete: policy=$POLICY_RESULT" >&2
+          if [[ "$POLICY_RESULT" != "success" || "$JAVASCRIPT_RESULT" != "success" ]]; then
+            echo "Required job failed or did not complete: policy=$POLICY_RESULT javascript=$JAVASCRIPT_RESULT" >&2
             exit 1
           fi
           echo "All required jobs completed successfully."
