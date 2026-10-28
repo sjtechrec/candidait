@@ -97,6 +97,38 @@ Rules:
 
 Imperative wording is a review expectation, not an automated language judgment.
 
+### CI enforcement and protection of main
+
+This section owns PR naming policy. Its implementation is
+[`scripts/policy/pr-policy.mjs`](scripts/policy/pr-policy.mjs), with allowed
+scopes in [`.github/pr-scopes.json`](.github/pr-scopes.json) and regression
+tests in [`pr-policy.test.mjs`](scripts/policy/pr-policy.test.mjs).
+
+The existing [CI workflow](.github/workflows/ci.yml) checks PR titles and bodies
+in `policy` for every PR event it handles, including `opened`, `synchronize`,
+`reopened`, `edited`, and `ready_for_review`. Drafts and bot-authored PRs have
+no naming exemption. Editing a title starts a fresh policy validation even if
+the code commit is unchanged. There is no separate duplicate naming workflow.
+
+Enforcement chain: **PR title/body → policy → verify → protected main**.
+The active main ruleset requires `verify` from GitHub Actions with an up-to-date
+branch and no bypass actors. Failed policy validation fails `verify`, preventing
+a normal merge. This is CI validation, not an independent human or AI approval.
+
+Automated title checks cover format, supported type/scope, breaking-marker
+position, lowercase summary start, the 100-character limit, no trailing period,
+no `#123`/`GH-123` references or full GitHub.com issue/PR URLs, and no explicit skip markers such as
+`[skip ci]` or `[skip review]`. Put issue references in the body. A GitHub-recognized
+CI skip instruction may prevent the workflow from starting and leave required
+checks pending; it never constitutes permission to merge without validation.
+Imperative meaning, arbitrary roadmap identifiers, label-like prose, and the
+appropriateness of the chosen scope still require review. Keep this distinction
+clear instead of claiming all semantic naming judgments are automated.
+
+Changes to policy, implementation, scopes, or enforcement must stay aligned and
+include positive/negative tests. A naming validator changed within a PR is still
+PR-controlled code; it does not replace independent review of governance changes.
+
 ### Types
 
 | Type | Use | Intended release effect |
