@@ -56,7 +56,15 @@ Agreed direction: candidates access the marketplace free; employers fund optiona
 | Playbook | Free framework/templates/guidance; paid adaptation/implementation | Deliverables, licenses, scope and pricing |
 | Embedded | Future service | Introductory economics, hours/days, cancellation implementation |
 
-User asked for these open commercial choices on October 28, 2026. No final response recorded when this document was prepared. These items cannot be finalized by the author without inventing business terms.
+### User update: October 28, 2026
+
+- Full placement credit replaces the earlier prorated-credit direction when a hire leaves or is terminated for cause before the applicable protection period ends. Detailed qualifying circumstances still need definition; do not equate all layoffs or employer misconduct with qualifying departures.
+- Credits should be claimed within one year. The starting event for that claim window and the separate deadline to use an issued credit have not been settled.
+- First Hire Free eligibility: employers that have never previously hired through Candidait. Related-entity treatment and other scope details remain open.
+- User requested an installment recommendation rather than approving a schedule. Proposed for discussion: Essential 2 equal monthly installments, Protected 3, Premium 6; first due on start date, subsequent payments on monthly anniversaries. Not agreed.
+- Unpaid-installment treatment and the amount of a Premium cash refund remain unresolved. Full credit must not silently become a full cash-refund promise.
+
+The table above preserves the earlier baseline; this dated update supersedes its prorated-credit and first-hire eligibility entries. Other final terms require user decisions.
 
 ## Policy publication dependencies
 
