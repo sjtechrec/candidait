@@ -6,6 +6,7 @@ Keep this index short. Durable project knowledge belongs in the smallest appropr
 
 - [Repository setup plan](repository-setup-plan.md)
 - [Pull request conventions](pull-request-conventions.md)
+- [Security and PR checks](security-and-pr-checks.md)
 - [GitHub Project workflow](github-project.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Security policy](../SECURITY.md)
