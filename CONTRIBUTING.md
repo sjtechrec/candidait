@@ -8,7 +8,7 @@ Thank you for helping improve Candidait.
 - Search existing issues and pull requests before starting duplicate work.
 - For a substantial change, open an issue before implementation so the outcome and risks can be discussed.
 - Never commit credentials, personal data, or other secrets.
-- Follow the [pull request conventions](docs/pull-request-conventions.md).
+- Follow the [pull request conventions](DEVOPS.md#pull-request-naming-conventions).
 - Read the [DevOps operating guide](DEVOPS.md) for check ownership, Draft/ready expectations, and which gates are currently enforced.
 
 ## Development workflow

@@ -29,7 +29,7 @@ Publish website changes through a pull request to `main`. GitHub Pages deploys t
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [pull request conventions](docs/pull-request-conventions.md) before proposing a change. Everyone participating in the project must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [pull request conventions](DEVOPS.md#pull-request-naming-conventions) before proposing a change. Everyone participating in the project must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Security
 

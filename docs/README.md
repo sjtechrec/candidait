@@ -5,7 +5,7 @@ Keep this index short. Durable project knowledge belongs in the smallest appropr
 ## Governance
 
 - [Repository setup plan](repository-setup-plan.md)
-- [Pull request conventions](pull-request-conventions.md)
+- [Pull request conventions](../DEVOPS.md#pull-request-naming-conventions)
 - [DevOps operating guide](../DEVOPS.md) — check ownership, Draft/ready lifecycle, merge gates, and deployment boundaries; the canonical CI/CD operating policy.
 - [GitHub Project workflow](github-project.md)
 - [Contributing](../CONTRIBUTING.md)

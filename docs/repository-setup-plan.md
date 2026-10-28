@@ -224,7 +224,7 @@ Merged, deployed, and verified remain separate states.
 
 ## Pull request and release policy
 
-The authoritative title, scope, body, branch, and exception rules are in [pull-request-conventions.md](pull-request-conventions.md). GitHub-native issue links belong in the body. `CHANGELOG.md` is generated. Labels cannot affect releases until the release pipeline demonstrably carries that information into release output.
+The authoritative title, scope, body, branch, and exception rules are in [DEVOPS.md — Pull Request Naming Conventions](../DEVOPS.md#pull-request-naming-conventions). GitHub-native issue links belong in the body. `CHANGELOG.md` is generated. Labels cannot affect releases until the release pipeline demonstrably carries that information into release output.
 
 ## Failure modes explicitly covered
 
