@@ -62,6 +62,12 @@ export function validatePullRequest({ title, body, scopes }) {
   if (summary.endsWith('.')) {
     errors.push('Summary must not end with a period.');
   }
+  if (/#\d+\b|\bGH-\d+\b/i.test(normalizedTitle)) {
+    errors.push('Issue and PR references belong in the body, not the title.');
+  }
+  if (/\[(?:skip (?:ci|actions|review)|(?:ci|actions) skip|no ci)\]/i.test(normalizedTitle)) {
+    errors.push('Policy opt-out markers are not allowed in the title.');
+  }
 
   const firstHeading = normalizedBody.match(/^#{1,6}\s+.+$/m)?.[0]?.trim();
   if (firstHeading !== '## Primary Scope') {
