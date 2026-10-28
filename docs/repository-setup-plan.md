@@ -3,7 +3,7 @@
 > Historical plan: the private-repository assumptions and security-configuration
 > guidance below are superseded. Candidait is now public and uses GitHub private
 > vulnerability reporting. Follow the current [security policy](../SECURITY.md)
-> and [security and PR checks](security-and-pr-checks.md), and verify live GitHub
+> and [DevOps operating guide](../DEVOPS.md), and verify live GitHub
 > settings before applying controls. The original plan is retained for context.
 
 ## Purpose
@@ -224,7 +224,7 @@ Merged, deployed, and verified remain separate states.
 
 ## Pull request and release policy
 
-The authoritative title, scope, body, branch, and exception rules are in [pull-request-conventions.md](pull-request-conventions.md). GitHub-native issue links belong in the body. `CHANGELOG.md` is generated. Labels cannot affect releases until the release pipeline demonstrably carries that information into release output.
+The authoritative title, scope, body, branch, and exception rules are in [DEVOPS.md — Pull Request Naming Conventions](../DEVOPS.md#pull-request-naming-conventions). GitHub-native issue links belong in the body. `CHANGELOG.md` is generated. Labels cannot affect releases until the release pipeline demonstrably carries that information into release output.
 
 ## Failure modes explicitly covered
 

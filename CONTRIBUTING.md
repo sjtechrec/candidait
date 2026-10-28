@@ -8,17 +8,19 @@ Thank you for helping improve Candidait.
 - Search existing issues and pull requests before starting duplicate work.
 - For a substantial change, open an issue before implementation so the outcome and risks can be discussed.
 - Never commit credentials, personal data, or other secrets.
-- Follow the [pull request conventions](docs/pull-request-conventions.md).
+- Follow the [pull request conventions](DEVOPS.md#pull-request-naming-conventions).
+- Read the [DevOps operating guide](DEVOPS.md) for check ownership, Draft/ready expectations, and which gates are currently enforced.
 
 ## Development workflow
 
 1. Create a focused branch from the latest `main` branch using `<type>/<short-kebab-description>`.
 2. Make the smallest coherent change that solves the problem.
 3. Add or update tests and documentation where applicable.
-4. Run the project's formatting, linting, and test commands.
-5. Open a pull request using the repository template.
+4. Run the [available validation commands](DEVOPS.md#automated-checks).
+5. Open a Draft pull request using the repository template while the change is in progress. Use local previews for website review.
+6. Mark it ready for review when the change and test/risk evidence are ready. Address CI and CodeRabbit findings on the latest revision before requesting a merge.
 
-Setup and application validation commands will be added after the application stack is established. Do not substitute passing no-op scripts for missing checks.
+The operating guide distinguishes current checks from planned website tests and deployment safeguards. Do not substitute passing no-op scripts for missing checks or claim a planned control is active.
 
 ## Branch and commit conventions
 
