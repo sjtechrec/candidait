@@ -43,3 +43,5 @@
 .help-notice{padding:18px}
 }
 .help-footer{background:var(--cloud)}
+
+.request-fields{display:grid;gap:12px;max-width:680px}.request-fields[hidden]{display:none}.request-fields label{font-weight:700}.request-fields input,.request-fields select,.request-fields textarea{width:100%;padding:12px;border:1px solid #758183;border-radius:8px;background:white;color:var(--ink);font:inherit}.request-fields textarea{resize:vertical}.request-fields [aria-invalid=true]{border:2px solid var(--danger)}.request-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}#draft-review{border:1px solid var(--line);padding:20px;background:white;border-radius:8px}#draft-output{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}#draft-review[hidden]{display:none}
