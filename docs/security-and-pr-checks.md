@@ -1,4 +1,108 @@
-# Security and pull request checks
+# CI, security, and pull request checks
+
+This is the canonical operating guide for check ownership, PR lifecycle,
+merge gates, and deployment boundaries. Start here when adding or changing
+automation. [Contributing](../CONTRIBUTING.md) describes the contributor workflow;
+[PR conventions](pull-request-conventions.md) define title/body syntax;
+[SECURITY.md](../SECURITY.md) defines private vulnerability reporting.
+
+## Ownership and change rules
+
+The repository maintainer, currently `@sjtechrec`, is accountable for changing
+automation, accepting review findings, approving risk, and authorizing merges.
+Tools produce evidence; they do not assume that accountability. Existing
+[CODEOWNERS](../.github/CODEOWNERS) routes changes for attention and is not a
+claim that independent approval is currently enforced.
+
+Every check must declare its input, owned decision, output, trigger, failure
+behavior, and relationship to the merge gate. Add work to its existing owner
+before adding another tool or workflow. Shared parsing or setup is acceptable;
+rerunning the same analysis or reposting the same finding needs a stated reason.
+
+| Lane and owner | Input and owned decision | Evidence/output | Boundary and merge role |
+| --- | --- | --- | --- |
+| Repository policy — `CI / policy` | Repository files and PR metadata; enforce documented conventions and test the validation scripts | Test output and policy errors | Current: required through `verify`. Does not test website behavior or own application security analysis. |
+| JavaScript correctness — `CI / javascript` | Tracked JS/MJS/CJS files and `.node-version`; validate syntax without executing those files | File count and parse failures | Current: required through `verify`. Does not run browser/behavior tests or CodeQL queries. |
+| Functional merge gate — `CI / verify` | Explicit results from its declared dependencies | One stable pass/fail check | Current: rejects failed, canceled, or skipped policy/javascript jobs. Does not rerun them or aggregate independent CodeQL/AI workflows. |
+| Workflow security — `CodeQL (actions)` | GitHub Actions definitions | Uploaded scan findings | Current: analyzes workflow security, not application JavaScript. Scan completion alone does not prove acceptable findings. |
+| Application security — `CodeQL (javascript-typescript)` | JavaScript/TypeScript | Uploaded scan findings | Current: analyzes application security, not PR prose or workflow YAML. |
+| Security result assessment — `Code scanning results / CodeQL` | Uploaded scan results and the PR diff | New-alert assessment | Current: consumes findings; does not run a third scan. Native findings-based merge protection is a planned change. |
+| Contextual review — CodeRabbit | Changed code, related files, CI findings, and PR intent | Commit-linked review comments/status | Current: advisory. Owns contextual bugs, regressions, and missing-test observations; does not own deterministic metadata conventions or intentionally duplicate CI findings. |
+| Website behavior — future `site` job | Served site, routes, assets, and user interactions | Browser smoke tests, local-link checks, focused accessibility results, failure traces/screenshots | Planned: no automated site job exists yet. Add to the functional gate only after reliable pass/fail canaries. |
+| Delivery — GitHub Pages | Current: main/root. Target: validated artifact and source SHA | Deployment record; target includes live SHA smoke result | Current: independent branch publishing. Tested-artifact deployment and live revision verification are planned. PR checks never own production credentials. |
+| Operational health — future scheduled audit | Desired/live settings, external links, background runs | Actionable drift/failure report | Planned: read-only scheduled checks, separate from PR validation. A local settings checker already exists. |
+
+Adding actionlint/YAML contracts belongs in policy/tooling validation. Adding
+site tests belongs in the website lane. Adding a second scanner or reviewer
+requires a documented coverage gap, not merely a new badge. On activation of
+new lanes, update this table, their failure behavior, and required-check rules
+in the same rollout. Planned rows are not evidence that those protections exist.
+
+## Draft and ready-for-review lifecycle
+
+A Draft PR is also open. Use its Draft flag to distinguish development from
+ready-for-review; `state: open` alone cannot make that distinction.
+
+The following is the agreed target policy. The current implementation is
+listed separately below so pending workflow changes cannot be mistaken for
+active controls.
+
+| Activity | Draft PR | Ready-for-review PR |
+| --- | --- | --- |
+| Policy/tooling tests and JavaScript syntax | Run on code updates | Run on code updates |
+| CodeQL | Run on code updates for early security feedback | Ensure current analysis/results are available before merge; native enforcement is pending |
+| Small site smoke/accessibility checks | Run when implemented | Run when implemented |
+| CodeRabbit | Manual early review if requested; automatic Draft review off | Automatic review and incremental review of code pushes |
+| PR metadata | Basic title/scope feedback; prose can evolve | Completed test/risk evidence appropriate to the change; expanded enforcement is pending |
+| Expensive browser/visual coverage | Manual opt-in where useful, once implemented | Relevant coverage once implemented |
+| Production deployment | Never | Never from the PR branch; deploy validated main after merge |
+
+Current implementation: CI runs for Draft and non-draft PRs on `opened`,
+`synchronize`, `reopened`, `edited`, `labeled`, `unlabeled`, and
+`ready_for_review`. CodeQL uses the default PR events `opened`, `synchronize`,
+and `reopened` for PRs into main. CodeRabbit has `drafts: false`. CI currently
+reruns code work on metadata/label events; separating those consumers is planned.
+
+Implement lifecycle automation with these boundaries:
+
+- Code pushes run applicable code checks in both states. Preserve inexpensive
+  deterministic feedback rather than switching off Draft CI wholesale.
+- `ready_for_review` must initiate complete ready-stage validation even when no
+  new commit was pushed. Test the bot transition too; a manual review is a
+  fallback, not proof of automatic readiness handling.
+- `converted_to_draft` should update lifecycle reporting and cancel obsolete
+  expensive work where supported. Actions concurrency does not cancel an
+  independent vendor review by itself.
+- Title/body edits run metadata validation. A changed target branch requires
+  appropriate integration validation. Labels trigger only their actual consumers.
+- Keep production deployment on main and scheduled health work out of the PR
+  critical path. No skip label exempts code from required safety checks.
+
+## Required-check contract
+
+Current enforcement: only `verify`, from the GitHub Actions app, is required
+by the main ruleset. It covers `policy` and `javascript`. CodeQL and CodeRabbit
+run independently and are not required merge gates today. Required findings
+protection, website tests, and AI review completion enforcement need separate
+implementation and validation before this document can call them active.
+
+`verify` must report an explicit decision even when a dependency fails. Never
+replace its enforcement with an unconditional success message. Treat unexpected
+skips, cancellation, missing results, and tool failure as incomplete required
+work. A valid not-applicable decision needs an explicit tested rule.
+
+GitHub can treat a conditionally skipped job as successful, while a workflow
+that never starts can leave a required check pending. Avoid workflow-level path
+exclusions for required reporting and do not rely on `if: !draft` as a complete
+merge-safety design. A green Draft result for a commit must not substitute for
+ready-only mandatory work on that same commit. Keep the existing core verify
+dependencies running in both states until that transition contract is tested.
+
+Before changing lifecycle or required gates, demonstrate: Draft creation/push;
+ready without a new commit; ready pushes; Draft/ready toggles during a run;
+metadata-only changes; failed/canceled/missing/skipped dependencies; bot-authored
+PRs; scanner alerts; and reviewer outage/rate limits. Before enabling a merge
+queue, validate `merge_group` coverage for every required check.
 
 ## Automated checks
 
@@ -38,20 +142,10 @@ CodeRabbit's title and description pre-merge checks are disabled because
 `policy` owns the repository's PR metadata conventions. The bot may still assess
 whether a change actually fulfills its description or linked issue.
 
-## Check responsibilities and duplication audit
+## Analysis boundaries
 
 Audited on 2026-10-28 against live configuration, workflow job steps, validation
 scripts, and the CodeRabbit review on PR #17.
-
-| Visible check | Owns | Does not do |
-| --- | --- | --- |
-| CI / policy | Repository rules, local Markdown links, action pin format, PR metadata rules, and tests of the check scripts | Validate all application JavaScript syntax or scan application data flow |
-| CI / javascript | Parse every tracked JS/MJS/CJS file with the selected Node runtime, without executing it | Run behavioral tests or security queries |
-| CI / verify | Fail the stable required merge gate if policy or javascript fails, is canceled, or is skipped | Check out code, rerun tests, or run scanners |
-| CodeQL (actions) | Analyze GitHub Actions workflows for security problems | Analyze application JavaScript |
-| CodeQL (javascript-typescript) | Analyze JavaScript/TypeScript for security problems | Validate PR metadata or analyze workflow YAML |
-| Code scanning results / CodeQL | Evaluate uploaded findings against the PR diff and report new alerts | Run another CodeQL scan |
-| CodeRabbit | Contextual review of changed behavior, regressions, missing tests, and cross-file inconsistencies | Own deterministic PR metadata rules or repeat existing CI findings |
 
 `policy` tests the syntax checker against small fixtures; `javascript` applies
 that checker to the repository. Testing a guard and using it are different
@@ -74,21 +168,16 @@ baseline, and scheduled scans apply updated security queries even when source
 has not changed. These triggers serve different lifecycle purposes. They are
 not two scanners running on the same PR event.
 
-Only `verify` is required by the current branch ruleset. It aggregates `policy`
-and `javascript`, not CodeQL or CodeRabbit. A displayed successful check is not
-necessarily a required merge gate. Keep that distinction explicit when changing
-merge requirements.
-
 References: [CodeRabbit configuration](https://docs.coderabbit.ai/reference/configuration)
 and [GitHub code scanning results](https://docs.github.com/en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/triage-alerts-in-pull-requests).
 
-## AI review activation
+## AI review activation and recovery
 
-The YAML file alone does not activate CodeRabbit. Install the
-[CodeRabbit GitHub App](https://github.com/apps/coderabbitai) with access to
-only `sjtechrec/candidait`, then confirm automatic reviews are enabled in its
-dashboard. CodeRabbit currently offers free reviews for public repositories,
-subject to its usage limits. Confirm eligibility if visibility changes.
+CodeRabbit was verified reviewing PRs in this repository. The YAML file alone
+does not install the service. If reinstalling, scope the
+[CodeRabbit GitHub App](https://github.com/apps/coderabbitai) to the intended
+personal repositories and inspect installation and OAuth permissions separately.
+Do not expand organization access as an incidental sign-in step.
 
 Verify activation by opening a small PR and pushing a follow-up commit.
 Confirm the bot reviewed the latest revision. Do not make its check required
@@ -97,14 +186,14 @@ code changes and auto-merge disabled during this initial rollout.
 
 ## Repository controls
 
-Enable secret scanning and secret push protection, Dependabot alerts, and
-Dependabot security updates in repository security settings. Push protection
+Secret scanning, secret push protection, Dependabot alerts, and Dependabot
+security updates are enabled in repository security settings. Push protection
 blocks supported secret patterns; it cannot detect every credential.
 
-Require `verify` from the GitHub Actions app in the default branch ruleset
-after confirming it succeeds on this PR. Require branches to be up to date.
-Preserve the existing PR requirement, conversation resolution, deletion
-protection, and force-push protection. With one maintainer, do not require
+The default branch ruleset requires `verify` from the GitHub Actions app and
+up-to-date branches, PRs, conversation resolution, and squash merges. It blocks
+deletion and force pushes and has no bypass actors. Preserve those controls.
+With one maintainer, do not require
 an approval the author cannot provide. Add independent approval and code-owner
 review when a second trusted maintainer joins.
 
@@ -120,3 +209,26 @@ If a new required check prevents recovery, edit the ruleset to remove only
 that check, repair CI through a PR, and restore the check after verification.
 Keep secret protection enabled unless a concrete operational issue requires
 a separately reviewed change.
+
+## Failure handling and future rollout
+
+Each lane reports actionable failure evidence and the affected revision. Prefer
+job summaries over a new bot comment on every push. Website failures should
+eventually attach traces/screenshots with bounded retention and no candidate
+data. Distinguish flakes recovered by retry from first-attempt passes; do not
+use blanket retries to conceal deterministic failures.
+
+The maintainer triages security findings using their actual source/sink and
+impact, and records fixes or justified dismissals. An AI check's completion
+does not mean all findings were fixed, and a skipped review is not evidence
+that analysis ran. Re-check the latest revision after follow-up commits.
+
+Roll out separately: stronger policy/guard tests and native CodeQL merge
+protection; website smoke/accessibility tests; tested-artifact Pages deployment
+and live SHA verification; then scheduled read-only settings/health checks.
+Keep the local preview as design feedback, not proof of CI or deployment success.
+
+References: [GitHub PR events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request),
+[required-check behavior](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks),
+[CodeRabbit review controls](https://docs.coderabbit.ai/configuration/auto-review),
+and [custom Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
