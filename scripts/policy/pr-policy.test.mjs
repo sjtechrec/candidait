@@ -85,6 +85,8 @@ for (const [title, expected] of [
   [`docs(repo): ${'a'.repeat(89)}`, '100 characters'],
   ['docs(repo): document policy (#123)', 'references belong in the body'],
   ['docs(repo): document policy GH-123', 'references belong in the body'],
+  ['docs(repo): document policy https://github.com/owner/repo/issues/123', 'references belong in the body'],
+  ['docs(repo): document policy https://github.com/owner/repo/pull/123', 'references belong in the body'],
   ['docs(repo): document policy [skip review]', 'opt-out'],
   ['docs(repo): document policy [skip ci]', 'opt-out'],
   ['docs(repo): document policy [actions skip]', 'opt-out'],
@@ -100,6 +102,7 @@ test('accepts the 100-character title boundary and ordinary numbers', () => {
   assert.equal(title.length, 100);
   assert.deepEqual(validatePullRequest({ title, body: body(), scopes }), []);
   assert.deepEqual(validatePullRequest({ title: 'docs(repo): explain 2 validation steps', body: body(), scopes }), []);
+  assert.deepEqual(validatePullRequest({ title: 'docs(repo): explain https://github.com/owner/repo/wiki', body: body(), scopes }), []);
 });
 
 test('accepts every supported type with its required evidence', () => {

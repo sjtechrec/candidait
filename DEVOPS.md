@@ -117,7 +117,7 @@ a normal merge. This is CI validation, not an independent human or AI approval.
 
 Automated title checks cover format, supported type/scope, breaking-marker
 position, lowercase summary start, the 100-character limit, no trailing period,
-no `#123`/`GH-123` issue references, and no explicit skip markers such as
+no `#123`/`GH-123` references or full GitHub.com issue/PR URLs, and no explicit skip markers such as
 `[skip ci]` or `[skip review]`. Put issue references in the body. A GitHub-recognized
 CI skip instruction may prevent the workflow from starting and leave required
 checks pending; it never constitutes permission to merge without validation.

@@ -62,7 +62,7 @@ export function validatePullRequest({ title, body, scopes }) {
   if (summary.endsWith('.')) {
     errors.push('Summary must not end with a period.');
   }
-  if (/#\d+\b|\bGH-\d+\b/i.test(normalizedTitle)) {
+  if (/#\d+\b|\bGH-\d+\b|https?:\/\/(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/(?:issues|pull)\/\d+\b/i.test(normalizedTitle)) {
     errors.push('Issue and PR references belong in the body, not the title.');
   }
   if (/\[(?:skip (?:ci|actions|review)|(?:ci|actions) skip|no ci)\]/i.test(normalizedTitle)) {
