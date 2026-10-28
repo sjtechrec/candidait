@@ -246,6 +246,18 @@ node scripts/policy/repository-policy.mjs
 node scripts/checks/javascript.mjs
 ```
 
+PR metadata is also validated in CI. To check it locally in PowerShell, supply
+the proposed title and the actual PR body saved in a text file:
+
+```powershell
+$env:PR_TITLE = 'docs(docs): clarify repository guidance'
+$env:PR_BODY = Get-Content -Raw /path/to/pr-body.md
+node scripts/policy/pr-policy.mjs
+```
+
+The body must follow the [conventions above](#pull-request-naming-conventions).
+These variables are inputs to the local check, not repository configuration.
+
 `CodeQL` scans workflow definitions and JavaScript on PRs into `main`, pushes
 to `main`, every Monday, and manual requests. Findings appear under GitHub
 Security > Code scanning. A successful scan means analysis completed; it does
@@ -319,6 +331,11 @@ blocks supported secret patterns; it cannot detect every credential.
 The default branch ruleset requires `verify` from the GitHub Actions app and
 up-to-date branches, PRs, conversation resolution, and squash merges. It blocks
 deletion and force pushes and has no bypass actors. Preserve those controls.
+These configured rules were rechecked through the GitHub API on 2026-10-28;
+see the [live main ruleset](https://github.com/sjtechrec/candidait/rules/25984667).
+`verify` is the only required status check; the other protections are separate
+rule types, not additional check names. This configuration verification does
+not claim that every protection has received an end-to-end activation canary.
 With one maintainer, do not require
 an approval the author cannot provide. Add independent approval and code-owner
 review when a second trusted maintainer joins.
