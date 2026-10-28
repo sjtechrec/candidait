@@ -141,7 +141,7 @@ export function validateRepository(root = process.cwd()) {
     ['read-only contents permission', /^permissions:\s*\n\s{2}contents:\s*read$/m],
     ['verify job', /^\s{2}verify:/m],
     ['always-running aggregate', /^\s{4}if:\s*\$\{\{ always\(\) \}\}$/m],
-    ['policy dependency', /^\s{4}needs:\s*\[policy\]$/m],
+    ['policy and JavaScript dependencies', /^\s{4}needs:\s*\[policy, javascript\]$/m],
   ];
   for (const [description, pattern] of requiredPatterns) {
     if (!pattern.test(ci)) errors.push(`CI workflow is missing ${description}.`);

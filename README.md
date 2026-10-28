@@ -1,10 +1,12 @@
 # Candidait
 
-Candidait is a private project in its foundation phase. The product purpose, application stack, data model, and deployment target must be explicitly decided before application development begins.
+Candidait is a human-centered career marketplace prototype for candidates and employers.
 
 ## Current status
 
-Repository governance and documentation are being established first. There is no application, supported release, or production environment yet.
+The public website is hosted at [www.candidait.com](https://www.candidait.com/) using GitHub Pages. Its static HTML, CSS, JavaScript, fonts, and brand assets live at the repository root. Pages publishes from `main` and `/ (root)`. The `CNAME` file preserves the custom domain; `.nojekyll` serves the files without Jekyll processing.
+
+The public site currently shows a coming-soon page with the brand header. Existing prototype routes also show this page, so unfinished features are not presented as available. The full static prototype is preserved on the `prototype/full-website` branch for continued development. Resume analysis, live AI search, real authentication, applications, and employer services are not connected to backend services.
 
 - [Repository setup plan](docs/repository-setup-plan.md)
 - [Roadmap](ROADMAP.md)
@@ -20,7 +22,9 @@ git clone https://github.com/sjtechrec/candidait.git
 cd candidait
 ```
 
-Runtime requirements and reproducible setup commands will be added with the application-stack decision. Until then, no application build or test command is claimed.
+No build or dependency installation is required for the static website. To preview it with Python 3, run `python -m http.server 3000` from the repository root, then open `http://localhost:3000/`. Use a local server rather than opening the HTML file directly, because links and assets use root-relative paths.
+
+Publish website changes through a pull request to `main`. GitHub Pages deploys the merged files automatically. To roll back a website release, revert its pull request while retaining `CNAME` and the existing Pages settings.
 
 ## Contributing
 

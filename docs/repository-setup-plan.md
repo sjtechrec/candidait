@@ -1,5 +1,11 @@
 # Repository setup plan
 
+> Historical plan: the private-repository assumptions and security-configuration
+> guidance below are superseded. Candidait is now public and uses GitHub private
+> vulnerability reporting. Follow the current [security policy](../SECURITY.md)
+> and [security and PR checks](security-and-pr-checks.md), and verify live GitHub
+> settings before applying controls. The original plan is retained for context.
+
 ## Purpose
 
 This plan establishes a small, verifiable path from an empty private repository to a repository capable of supporting production work. Controls are added only when they can be demonstrated. Missing capabilities remain explicit blockers rather than silently passing stubs.
