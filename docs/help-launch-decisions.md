@@ -47,7 +47,7 @@ Agreed direction: candidates access the marketplace free; employers fund optiona
 | --- | --- | --- |
 | Essential | 25% of annual base salary; prorated placement credit for departures in 60-day protection | Qualifying departures; period trigger; proration; claim process |
 | Protected | 30%; prorated placement credit in 90-day protection | Same mechanics |
-| Premium | 35%; prorated placement credit or money back in 180-day protection | Who chooses credit/refund; eligibility; timing and mechanics |
+| Premium | 35%; full placement credit OR cancellation of remaining unpaid installments in 180-day protection; no refund of paid amounts under cancellation option | Credit option and unpaid-balance interaction; qualifying-departure details; claim process |
 | Billing | Monthly installments | Count, dates, first payment, unpaid installment treatment |
 | Credit | Placement credit | Calculation, use, expiry, transferability |
 | First Hire Free | Free first placement, no repeat obligation | Eligible organizations/roles; exclusions; expenses; protection; repeat/related entities |
@@ -62,7 +62,7 @@ Agreed direction: candidates access the marketplace free; employers fund optiona
 - Credits should be claimed within one year. The starting event for that claim window and the separate deadline to use an issued credit have not been settled.
 - First Hire Free eligibility: employers that have never previously hired through Candidait. Related-entity treatment and other scope details remain open.
 - User requested an installment recommendation rather than approving a schedule. Proposed for discussion: Essential 2 equal monthly installments, Protected 3, Premium 6; first due on start date, subsequent payments on monthly anniversaries. Not agreed.
-- Unpaid-installment treatment and the amount of a Premium cash refund remain unresolved. Full credit must not silently become a full cash-refund promise.
+- Premium clarification: alternative to full placement credit is cancellation of remaining unpaid installments, without refunding payments already made. This supersedes earlier money-back/prorated-refund language. Do not market cancellation as a cash refund. The full-credit option and its interaction with unpaid installments remain to be defined.
 
 The table above preserves the earlier baseline; this dated update supersedes its prorated-credit and first-hire eligibility entries. Other final terms require user decisions.
 
