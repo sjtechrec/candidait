@@ -3,7 +3,7 @@
 > Historical plan: the private-repository assumptions and security-configuration
 > guidance below are superseded. Candidait is now public and uses GitHub private
 > vulnerability reporting. Follow the current [security policy](../SECURITY.md)
-> and [security and PR checks](security-and-pr-checks.md), and verify live GitHub
+> and [DevOps operating guide](../DEVOPS.md), and verify live GitHub
 > settings before applying controls. The original plan is retained for context.
 
 ## Purpose

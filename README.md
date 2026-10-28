@@ -12,6 +12,7 @@ The public site currently shows a coming-soon page with the brand header. Existi
 - [Roadmap](ROADMAP.md)
 - [GitHub Project](https://github.com/users/sjtechrec/projects/2)
 - [Documentation index](docs/README.md)
+- [DevOps operating guide](DEVOPS.md) — CI/CD responsibilities, workflow inventory, and operating policies.
 
 ## Getting started
 

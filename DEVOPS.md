@@ -1,23 +1,47 @@
-# CI, security, and pull request checks
+# DevOps operating guide
 
-This is the canonical operating guide for check ownership, PR lifecycle,
-merge gates, and deployment boundaries. Start here when adding or changing
-automation. [Contributing](../CONTRIBUTING.md) describes the contributor workflow;
-[PR conventions](pull-request-conventions.md) define title/body syntax;
-[SECURITY.md](../SECURITY.md) defines private vulnerability reporting.
+This file owns the human-readable CI/CD swim lanes, responsibilities, and
+operating policies, including PR lifecycle, merge gates, and deployment
+boundaries. Executable behavior lives in `.github/workflows/` and associated
+scripts; GitHub settings enforce repository rules. Keep those implementations
+aligned with this guide. Start here when adding or changing
+automation. [Contributing](CONTRIBUTING.md) describes the contributor workflow;
+[PR conventions](docs/pull-request-conventions.md) define title/body syntax;
+[SECURITY.md](SECURITY.md) owns security policy, including vulnerability reporting.
+
+## Security policy authority
+
+[SECURITY.md](SECURITY.md) is authoritative on security matters and takes
+precedence over this guide if they conflict. Its scope may expand beyond
+vulnerability reporting. This guide defines how CI/CD implements and verifies
+security requirements; it does not independently set or override security policy.
+
+Link to the applicable security policy rather than duplicating it here. Keep
+workflow ownership, triggers, permissions, checks, and operational procedures in
+this guide. When a proposed automation change would change security policy,
+update and review `SECURITY.md` first or in the same PR, then align the
+implementation and this guide. Resolve conflicts before deploying the change.
 
 ## Ownership and change rules
 
 The repository maintainer, currently `@sjtechrec`, is accountable for changing
 automation, accepting review findings, approving risk, and authorizing merges.
 Tools produce evidence; they do not assume that accountability. Existing
-[CODEOWNERS](../.github/CODEOWNERS) routes changes for attention and is not a
+[CODEOWNERS](.github/CODEOWNERS) routes changes for attention and is not a
 claim that independent approval is currently enforced.
 
 Every check must declare its input, owned decision, output, trigger, failure
 behavior, and relationship to the merge gate. Add work to its existing owner
 before adding another tool or workflow. Shared parsing or setup is acceptable;
 rerunning the same analysis or reposting the same finding needs a stated reason.
+
+**No duplicative CI/CD:** each automation must have a distinct owned decision.
+Before adding a workflow, check, scanner, or reviewer, identify the gap it fills
+and reuse the existing lane when possible. Do not run duplicate default/custom
+scanner setups. Any intentional overlap must document its additional coverage,
+cost, and authoritative result. Retire the replaced implementation when migrating
+tools. Aggregating existing results is allowed; repeating their work is not a
+new responsibility.
 
 | Lane and owner | Input and owned decision | Evidence/output | Boundary and merge role |
 | --- | --- | --- | --- |
@@ -104,7 +128,19 @@ metadata-only changes; failed/canceled/missing/skipped dependencies; bot-authore
 PRs; scanner alerts; and reviewer outage/rate limits. Before enabling a merge
 queue, validate `merge_group` coverage for every required check.
 
-## Automated checks
+## Workflows
+
+Maintain the workflow inventory here rather than in a separate competing guide.
+Update it together with trigger, ownership, or deployment changes.
+
+| Implementation | Owner/purpose | Current triggers |
+| --- | --- | --- |
+| [ci.yml](.github/workflows/ci.yml) | Policy, JavaScript validation, and the functional `verify` gate | PR events listed in the lifecycle section; main push; merge group; manual |
+| [codeql.yml](.github/workflows/codeql.yml) | Workflow and application security analysis | PR opened/updated/reopened into main; main push; Monday schedule; manual |
+| GitHub Pages generated workflow | Production publishing from main/root | Publishing-source updates; independent of CI today |
+| [.coderabbit.yaml](.coderabbit.yaml) and GitHub App | Contextual PR review; external integration, not another Actions workflow | Eligible non-draft PRs and code pushes; manual review |
+
+### Automated checks
 
 The `CI` workflow runs on pull requests, pushes to `main`, merge groups, and
 manual requests. `policy` tests repository guards and validates repository and
@@ -131,7 +167,7 @@ timeouts, and read-only contents access. Only CodeQL's analysis job receives
 `security-events: write`. PR checks receive no deployment credentials and do
 not use `pull_request_target`. Dependabot maintains action pins weekly.
 
-## AI review
+### AI review
 
 `.coderabbit.yaml` configures CodeRabbit to automatically review non-draft PRs
 and new pushes. Reviews focus on defects, security, privacy, regressions, and
@@ -142,7 +178,7 @@ CodeRabbit's title and description pre-merge checks are disabled because
 `policy` owns the repository's PR metadata conventions. The bot may still assess
 whether a change actually fulfills its description or linked issue.
 
-## Analysis boundaries
+### Analysis boundaries
 
 Audited on 2026-10-28 against live configuration, workflow job steps, validation
 scripts, and the CodeRabbit review on PR #17.
@@ -171,7 +207,7 @@ not two scanners running on the same PR event.
 References: [CodeRabbit configuration](https://docs.coderabbit.ai/reference/configuration)
 and [GitHub code scanning results](https://docs.github.com/en/code-security/how-tos/manage-security-alerts/manage-code-scanning-alerts/triage-alerts-in-pull-requests).
 
-## AI review activation and recovery
+### AI review activation and recovery
 
 CodeRabbit was verified reviewing PRs in this repository. The YAML file alone
 does not install the service. If reinstalling, scope the
