@@ -87,7 +87,7 @@ The first workflow must:
 - Avoid workflow-level path filters and CI-skip mechanisms.
 - Use full commit SHAs for external actions and record the intended tag beside each pin.
 
-The title checker enforces structure, allowed type and scope, breaking syntax, length, and punctuation. Imperative English remains a reviewer judgment.
+The title checker enforces structure, shared prefixes, optional lowercase scope syntax, and breaking syntax. Imperative English remains a reviewer judgment.
 
 Canary sequence:
 

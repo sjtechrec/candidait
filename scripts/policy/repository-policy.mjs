@@ -10,7 +10,6 @@ const REQUIRED_FILES = [
   '.github/ISSUE_TEMPLATE/config.yml',
   '.github/ISSUE_TEMPLATE/feature.yml',
   '.github/dependabot.yml',
-  '.github/pr-scopes.json',
   '.github/pull_request_template.md',
   '.github/settings/repository.json',
   '.github/workflows/ci.yml',
@@ -96,13 +95,6 @@ export function validateRepository(root = process.cwd()) {
   if (fs.existsSync(path.join(root, 'PULL_REQUEST_TEMPLATE.md'))) {
     errors.push('Pull request template must live under .github/.');
   }
-
-  const scopesPath = path.join(root, '.github', 'pr-scopes.json');
-  const scopes = JSON.parse(fs.readFileSync(scopesPath, 'utf8')).scopes;
-  if (!Array.isArray(scopes) || scopes.length === 0) errors.push('PR scopes must be a non-empty array.');
-  if (new Set(scopes).size !== scopes.length) errors.push('PR scopes must be unique.');
-  if ([...scopes].sort().join('\n') !== scopes.join('\n')) errors.push('PR scopes must be sorted.');
-  if (!scopes.includes('various')) errors.push('PR scopes must include various.');
 
   const textFiles = allFiles.filter((file) => TEXT_EXTENSIONS.has(path.extname(file).toLowerCase()));
   const bannedPlaceholders = [

@@ -64,13 +64,15 @@ in the same rollout. Planned rows are not evidence that those protections exist.
 
 ## Pull Request Naming Conventions
 
-Candidait uses squash merging. The pull request title becomes the default commit subject on `main`, so titles follow a constrained form of Conventional Commits.
+Candidait uses squash merging. The pull request title becomes the default
+commit subject on `main`. Use the same naming convention as Candidait Agentic.
 
 ### Title
 
 ```text
 <type>(<scope>): <imperative summary>
 <type>(<scope>)!: <imperative summary>
+<type>: <imperative summary>
 ```
 
 Examples:
@@ -78,30 +80,43 @@ Examples:
 ```text
 feat(project): rank candidates by relevant experience
 fix(project): preserve the destination after sign-in
-perf(project): reduce candidate result latency
+latency(search): reduce candidate result latency
 docs(repo): establish repository standards
-ci(ci): add the aggregate verification gate
+chore(ci): update the aggregate verification gate
 feat(project)!: replace the candidate scoring response
 ```
 
 Rules:
 
 - Type and scope are lowercase.
-- Scope is required by this project and must appear in `.github/pr-scopes.json`.
-- A scope is one word or one hyphenated phrase. Use `various` only for an inseparable multi-area change.
+- Prefer a lowercase kebab-case scope for the primary area, such as `search`,
+  `help-center`, or `ci`. Omit it when the summary already makes the area clear.
+- Use `various` for changes that must land together when no single scope fits.
+  Explain the connection in the PR body's Primary Scope section.
 - Put `!` immediately before the colon for a breaking change.
-- Use a concise imperative summary without a trailing period.
-- Keep the complete title at or below 100 characters.
+- Start the summary with a clear action such as `add`, `prevent`, or `update`.
 - Do not place issue numbers, roadmap identifiers, labels, or policy opt-outs in the title.
 - Product codenames, customer names, usernames, and ticket IDs are not scopes.
 
 Imperative wording is a review expectation, not an automated language judgment.
 
+| Prefix | Use | Typical release impact |
+| --- | --- | --- |
+| `feat` | Add a backward-compatible capability | Minor |
+| `fix` | Correct behavior | Patch |
+| `latency` | Improve speed with comparable before-and-after measurements while preserving behavior | Patch |
+| `revert` | Reverse an earlier change and cite the original PR or commit | Assess compatibility and what was already released |
+| `chore` | Tooling, dependencies, CI, or configuration | None for maintenance-only changes |
+| `docs` | Documentation and records | None for documentation-only changes |
+| `refactor` | Change implementation with equivalent behavior | None for internal-only changes |
+
+Assess release impact from each affected component's diff. For stacked PRs,
+assess each PR against its immediate base and reconcile at release time.
+
 ### CI enforcement and protection of main
 
 This section owns PR naming policy. Its implementation is
-[`scripts/policy/pr-policy.mjs`](scripts/policy/pr-policy.mjs), with allowed
-scopes in [`.github/pr-scopes.json`](.github/pr-scopes.json) and regression
+[`scripts/policy/pr-policy.mjs`](scripts/policy/pr-policy.mjs), with regression
 tests in [`pr-policy.test.mjs`](scripts/policy/pr-policy.test.mjs).
 
 The existing [CI workflow](.github/workflows/ci.yml) checks PR titles and bodies
@@ -115,8 +130,8 @@ The active main ruleset requires `verify` from GitHub Actions with an up-to-date
 branch and no bypass actors. Failed policy validation fails `verify`, preventing
 a normal merge. This is CI validation, not an independent human or AI approval.
 
-Automated title checks cover format, supported type/scope, breaking-marker
-position, lowercase summary start, the 100-character limit, no trailing period,
+Automated title checks cover format, supported prefixes, optional scope syntax,
+breaking-marker position, lowercase summary start,
 no `#123`/`GH-123` references or full GitHub.com issue/PR URLs, and no explicit skip markers such as
 `[skip ci]` or `[skip review]`. Put issue references in the body. A GitHub-recognized
 CI skip instruction may prevent the workflow from starting and leave required
@@ -125,7 +140,7 @@ Imperative meaning, arbitrary roadmap identifiers, label-like prose, and the
 appropriateness of the chosen scope still require review. Keep this distinction
 clear instead of claiming all semantic naming judgments are automated.
 
-Changes to policy, implementation, scopes, or enforcement must stay aligned and
+Changes to policy, implementation, or enforcement must stay aligned and
 include positive/negative tests. A naming validator changed within a PR is still
 PR-controlled code; it does not replace independent review of governance changes.
 
