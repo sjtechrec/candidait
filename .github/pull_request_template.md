@@ -1,6 +1,6 @@
 ## Primary Scope
 
-<!-- Use one allowed scope and explain the boundary, for example: `repo` — repository governance and contribution rules. -->
+<!-- Optional if clear from the title. Match any scope in the title, and explain why mixed-scope changes belong together. -->
 
 ## Summary
 
@@ -24,7 +24,7 @@ Not applicable.
 
 ## Performance
 
-<!-- Required only for `perf`: Method, Before, and After. Otherwise remove this section or write "Not applicable." -->
+<!-- Required only for `latency`: Method, Before, and After. Otherwise remove this section. -->
 
 ## Related Work
 

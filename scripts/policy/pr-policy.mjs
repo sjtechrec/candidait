@@ -1,18 +1,14 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const ALLOWED_TYPES = new Set([
-  'build',
   'chore',
-  'ci',
   'docs',
   'feat',
   'fix',
-  'perf',
+  'latency',
   'refactor',
   'revert',
-  'test',
 ]);
 
 export function stripComments(value) {
@@ -33,18 +29,14 @@ export function getSection(body, heading) {
   return stripComments(content.join('\n'));
 }
 
-export function validatePullRequest({ title, body, scopes }) {
+export function validatePullRequest({ title, body }) {
   const errors = [];
   const normalizedTitle = title.trim();
   const normalizedBody = body.replace(/\r\n/g, '\n');
 
-  if (normalizedTitle.length > 100) {
-    errors.push('Title must be 100 characters or fewer.');
-  }
-
-  const match = /^(?<type>[a-z]+)\((?<scope>[a-z0-9]+(?:-[a-z0-9]+)*)\)(?<breaking>!)?: (?<summary>.+)$/.exec(normalizedTitle);
+  const match = /^(?<type>[a-z]+)(?:\((?<scope>[a-z0-9]+(?:-[a-z0-9]+)*)\))?(?<breaking>!)?: (?<summary>.+)$/.exec(normalizedTitle);
   if (!match?.groups) {
-    errors.push('Title must match <type>(<scope>): <summary> or <type>(<scope>)!: <summary>.');
+    errors.push('Title must match <type>[(<scope>)][!]: <summary>.');
     return errors;
   }
 
@@ -53,38 +45,22 @@ export function validatePullRequest({ title, body, scopes }) {
   if (!ALLOWED_TYPES.has(type)) {
     errors.push(`Unsupported type: ${type}.`);
   }
-  if (!scopes.includes(scope)) {
-    errors.push(`Unsupported scope: ${scope}.`);
-  }
   if (!/^[a-z0-9]/.test(summary)) {
     errors.push('Summary must begin with a lowercase letter or number.');
-  }
-  if (summary.endsWith('.')) {
-    errors.push('Summary must not end with a period.');
   }
   if (/#\d+\b|\bGH-\d+\b|https?:\/\/(?:www\.)?github\.com\/[^/\s]+\/[^/\s]+\/(?:issues|pull)\/\d+\b/i.test(normalizedTitle)) {
     errors.push('Issue and PR references belong in the body, not the title.');
   }
-  if (/\[(?:skip (?:ci|actions|review)|(?:ci|actions) skip|no ci)\]/i.test(normalizedTitle)) {
+  if (/\[(?:skip (?:ci|actions|review)|(?:ci|actions) skip|no ci)\]|\b(?:no-arch-change|skip-changelog)\b/i.test(normalizedTitle)) {
     errors.push('Policy opt-out markers are not allowed in the title.');
   }
 
-  const firstHeading = normalizedBody.match(/^#{1,6}\s+.+$/m)?.[0]?.trim();
-  if (firstHeading !== '## Primary Scope') {
-    errors.push('The first rendered heading must be ## Primary Scope.');
-  }
-
   const primaryScope = getSection(normalizedBody, 'Primary Scope');
-  if (!primaryScope) {
-    errors.push('Primary Scope must contain non-comment text.');
-  } else {
-    const statedScope = /`([^`]+)`/.exec(primaryScope)?.[1];
-    if (statedScope !== scope) {
-      errors.push(`Primary Scope must name \`${scope}\`.`);
-    }
-    if (scope === 'various' && stripComments(primaryScope.replace(/`various`/, '')).length < 40) {
-      errors.push('The various scope requires a substantive explanation of affected areas and why the PR cannot be split.');
-    }
+  if (scope && primaryScope && /`([^`]+)`/.exec(primaryScope)?.[1] !== scope) {
+    errors.push(`Primary Scope must name \`${scope}\`.`);
+  }
+  if (scope === 'various' && stripComments((primaryScope ?? '').replace(/`various`/, '')).length < 40) {
+    errors.push('The various scope requires a substantive explanation of affected areas and why the PR cannot be split.');
   }
 
   if (breaking) {
@@ -94,11 +70,11 @@ export function validatePullRequest({ title, body, scopes }) {
     }
   }
 
-  if (type === 'perf') {
+  if (type === 'latency') {
     const performance = getSection(normalizedBody, 'Performance');
     for (const field of ['Method:', 'Before:', 'After:']) {
       if (!performance?.includes(field)) {
-        errors.push(`A perf PR requires ${field} in a Performance section.`);
+        errors.push(`A latency PR requires ${field} in a Performance section.`);
       }
     }
   }
@@ -110,17 +86,10 @@ export function validatePullRequest({ title, body, scopes }) {
   return errors;
 }
 
-export function loadScopes(root = process.cwd()) {
-  const file = path.join(root, '.github', 'pr-scopes.json');
-  const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return parsed.scopes;
-}
-
 function main() {
   const errors = validatePullRequest({
     title: process.env.PR_TITLE ?? '',
     body: process.env.PR_BODY ?? '',
-    scopes: loadScopes(),
   });
 
   if (errors.length > 0) {
