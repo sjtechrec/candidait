@@ -8,8 +8,7 @@ This roadmap communicates direction, not a fixed commitment. Priorities may chan
 - Confirm whether the project remains proprietary or adopts an open-source license.
 - Select and document the application architecture and technology stack.
 - Establish the issue, pull request, decision-record, and Project workflows.
-- Add real continuous integration checks and prove their failure paths.
-- Upgrade the GitHub plan or change visibility so `main` can be technically protected.
+- Maintain the [existing CI checks and protection of `main`](DEVOPS.md#ci-enforcement-and-protection-of-main) as the website grows.
 - Document security, privacy, data-retention, and recovery requirements.
 
 ## 2. Initial product
