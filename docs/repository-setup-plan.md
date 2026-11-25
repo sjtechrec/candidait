@@ -204,7 +204,9 @@ These are production gates, not optional roadmap prose.
 
 Configure Dependabot for GitHub Actions and the selected package ecosystem. Group low-risk updates and review all action-pin changes.
 
-Release automation is deferred until fixture tests prove version and changelog behavior for `feat`, `fix`, `perf`, `revert`, non-release changes, mixed changes, and breaking changes, including pre-1.0 behavior.
+Release automation is deferred until fixture tests prove version and changelog
+behavior for the [current PR prefixes and release rules](../DEVOPS.md#pull-request-naming-conventions),
+including mixed changes, breaking changes, and pre-1.0 behavior.
 
 Do not use the default `GITHUB_TOKEN` to create release PRs that must trigger required CI; those events generally do not start new workflow runs. Prefer a narrowly scoped GitHub App installation token over a personal access token. Test credential expiration and release-bot recovery.
 

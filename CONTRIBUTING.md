@@ -10,6 +10,7 @@ Thank you for helping improve Candidait.
 - Never commit credentials, personal data, or other secrets.
 - Follow the [pull request conventions](DEVOPS.md#pull-request-naming-conventions).
 - Read the [DevOps operating guide](DEVOPS.md) for check ownership, Draft/ready expectations, and which gates are currently enforced.
+- Use the [documentation index](docs/README.md#which-record-to-update) to find the record affected by your PR.
 
 ## Development workflow
 

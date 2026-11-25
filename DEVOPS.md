@@ -144,26 +144,18 @@ Changes to policy, implementation, or enforcement must stay aligned and
 include positive/negative tests. A naming validator changed within a PR is still
 PR-controlled code; it does not replace independent review of governance changes.
 
-### Types
+### Release notes
 
-| Type | Use | Intended release effect |
-| --- | --- | --- |
-| `feat` | New user- or operator-visible capability | Minor; Added |
-| `fix` | Incorrect behavior | Patch; Fixed |
-| `perf` | Measurably faster or cheaper correct behavior | Patch; Changed |
-| `revert` | Reversal of an earlier merged change | Tool-dependent |
-| `docs` | Documentation and decision records only | None by default |
-| `refactor` | Internal restructuring without intended behavior change | None by default |
-| `test` | Test-only changes | None by default |
-| `build` | Build, packaging, or runtime assembly | None by default |
-| `ci` | Continuous integration and repository enforcement | None by default |
-| `chore` | Maintenance not covered by another type | None by default |
-
-Release effects are policy targets until fixture tests prove the selected release tool implements them.
+Use Added for new capabilities, Fixed for corrected behavior, and Changed
+for latency improvements. Use Removed when a reversal removes a released
+capability. Treat the prefix table above as guidance until release fixtures
+verify the selected tool's behavior.
 
 ### Primary scope
 
-The first rendered PR section must be a non-empty `## Primary Scope`. Its backticked scope must match the title. A `various` scope must list the affected areas and explain why the PR cannot be split.
+Use `## Primary Scope` when the title needs more context. If the title has
+a scope, match it in backticks. For `various`, explain why the changes must
+land together.
 
 ### Breaking changes
 
@@ -171,7 +163,7 @@ Any accepted type may use `!`. The PR body must identify the affected contract, 
 
 ### Type-specific evidence
 
-- `perf` requires the measurement method and before-and-after results.
+- `latency` requires the measurement method and before-and-after results.
 - `revert` requires a `Reverts:` reference to a commit or pull request.
 - A roadmap-delivery label requires a linked roadmap issue.
 
@@ -193,7 +185,7 @@ Custom roadmap identifiers, if introduced, belong in the body or a Project field
 <type>/<short-kebab-description>
 ```
 
-Examples include `docs/repository-standards`, `ci/aggregate-verification`, and `fix/sign-in-redirect-loop`. An issue number may be included when helpful, such as `feat/123-candidate-search`.
+Examples include `docs/repository-standards`, `chore/aggregate-verification`, and `fix/sign-in-redirect-loop`. An issue number may be included when helpful, such as `feat/123-candidate-search`.
 
 ### Policy exceptions
 
